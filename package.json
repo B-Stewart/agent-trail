@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "concurrently -k --names \"INGEST,NEXT\" --prefix-colors \"green,blue\" \"npm:dev:ingest\" \"npm:dev:next\"",
     "dev:next": "next dev --webpack --port 3029",
-    "dev:ingest": "INGEST_PORT=8077 tsx watch ingest/index.ts",
+    "dev:ingest": "INGEST_PORT=8078 tsx watch ingest/index.ts",
     "build": "next build --webpack",
     "build:ingest": "tsup ingest/index.ts --format cjs --out-dir ingest/dist --no-splitting --external better-sqlite3 --shims && cp ingest/db/schema.sql ingest/dist/schema.sql",
     "build:all": "pnpm build && pnpm build:ingest",
     "pack:npm": "pnpm build:all && node scripts/prepare-npm-package.mjs",
     "start": "next start --port 3029",
-    "start:ingest": "INGEST_PORT=8077 NODE_ENV=production node ingest/dist/index.js",
+    "start:ingest": "INGEST_PORT=8078 NODE_ENV=production node ingest/dist/index.js",
     "start:all": "concurrently -k --names \"INGEST,NEXT\" --prefix-colors \"green,blue\" \"npm:start:ingest\" \"npm:start\"",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
@@ -61,5 +61,14 @@
     "tsx": "^4.21.0",
     "typescript": "^5",
     "vitest": "^4.1.5"
+  },
+  "allowScripts": {
+    "eslint@9.39.5": true,
+    "better-sqlite3@12.11.1": true,
+    "sharp@0.34.5": true,
+    "esbuild@0.27.7": true,
+    "esbuild@0.28.2": true,
+    "unrs-resolver@1.12.2": true,
+    "fsevents@2.3.3": true
   }
 }
