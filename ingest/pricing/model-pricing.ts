@@ -67,6 +67,19 @@ const PRICING_RULES: PricingRule[] = [
   anthropic('claude-sonnet-4', [/^claude-sonnet-4(?:$|-[0-9]{8}|[-_.]20)/], 3, 15, 0.3, 3.75),
   anthropic('claude-haiku-4.5', [/^claude-haiku-4[-_.]?5(?:$|[-_.])/], 1, 5, 0.1, 1.25),
   anthropic('claude-haiku-3.5', [/^claude-haiku-3[-_.]?5(?:$|[-_.])/], 0.8, 4, 0.08, 1),
+  anthropic('claude-opus-5.5', [/^claude-opus-5[-_.]?5(?:$|[-_.])/], 4, 20, 0.2, 5),
+  anthropic('claude-sonnet-5.5', [/^claude-sonnet-5[-_.]?5(?:$|[-_.])/], 2, 10, 0.1, 2.5),
+  {
+    provider: 'Anthropic',
+    canonicalModel: 'claude-haiku-5.5',
+    match: [/^claude-haiku-5[-_.]?5(?:$|[-_.])/],
+    cacheReadIncludedInInput: false,
+    reasoningBilledAsOutput: true,
+    tiers: [
+      { maxInputTokens: 100_000, inputPerMillion: 0.1, outputPerMillion: 0.5, cacheReadPerMillion: 0.01, cacheWritePerMillion: 0.125 },
+      { inputPerMillion: 0.5, outputPerMillion: 2.5, cacheReadPerMillion: 0.05, cacheWritePerMillion: 0.625 },
+    ],
+  },
 
   gemini('gemini-3.1-pro-preview', [/^gemini-3\.1-pro-preview$/], [tier(2, 12, 0.2, 200_000), tier(4, 18, 0.4)]),
   gemini('gemini-3.1-flash-preview', [/^gemini-3\.1-flash-preview$/], [tier(1, 6, 0.2, 200_000), tier(2, 9, 0.4)]),

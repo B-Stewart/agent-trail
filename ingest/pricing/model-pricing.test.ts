@@ -38,6 +38,23 @@ describe('model pricing', () => {
     expect(estimateModelCost('claude-opus-4-7', { inputTokens: 0, outputTokens: 1_000_000 }).cost).toBe(25);
   });
 
+  it('prices Claude 5.5 models from the official pricing table', () => {
+    expect(estimateModelCost('claude-opus-5-5', { inputTokens: 1_000_000, outputTokens: 1_000_000 })).toMatchObject({
+      cost: 24,
+      canonicalModel: 'claude-opus-5.5',
+    });
+    expect(estimateModelCost('claude-sonnet-5-5', { inputTokens: 1_000_000, outputTokens: 1_000_000 })).toMatchObject({
+      cost: 12,
+      canonicalModel: 'claude-sonnet-5.5',
+    });
+  });
+
+  it('prices Claude Haiku 5.5 by prompt length tier', () => {
+    expect(estimateModelCost('claude-haiku-5-5', { inputTokens: 100_000, outputTokens: 0 }).cost).toBe(0.01);
+    expect(estimateModelCost('claude-haiku-5-5', { inputTokens: 1_000_000, outputTokens: 0 }).cost).toBe(0.5);
+    expect(estimateModelCost('claude-haiku-5-5', { inputTokens: 0, outputTokens: 1_000_000 }).cost).toBe(0.5);
+  });
+
   it('returns unknown for unpriced models', () => {
     expect(estimateModelCost('gpt-4o', { inputTokens: 1_000_000, outputTokens: 0 })).toMatchObject({
       cost: null,
